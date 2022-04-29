@@ -1,48 +1,63 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import StudentArray from "./StudentArray";
 
 const ListOfStudents = () => {
+  const [list, setList] = useState([]);
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+
+  const addName = (e) => {
+    setName(e.target.value);
+  };
+
+  const addLastName = (e) => {
+    setLastName(e.target.value);
+  };
+
+  const addEmail = (e) => {
+    setEmail(e.target.value);
+  };
 
   const onAddStudent = (event) => {
     event.preventDefault();
-    if(name && lastName){
+    if (name && lastName && email) {
       const student = {
         name,
-        lastName
-      }
-      setList([...list, student])
-    } 
-  }
+        lastName,
+        email,
+      };
+      setList([...list, student]);
+    }
+  };
 
-  const [list, setList] = useState([])
-
-  const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
-
-  const addName = (event)=>{
-    setName(event.target.value)
-  }
-
- const addLastName = (event) => {
-    setLastName(event.target.value)
- }
-
+  const handleDelete = (idx) => {
+    let aux = [...list];
+    aux.splice(idx, 1);
+    setList(aux);
+  };
 
   return (
     <div>
       <h1>Hello from the list of students</h1>
-      <form>
-        <label>Name</label>
-        <input onChange={addName} type="text" name="name" />
-        <label>Last name</label>
-        <input onChange={addLastName}  type="text" name="lastName" />
+      <form className="form">
+        <div className="labels">
+          <label>Name</label>
+          <input onChange={addName} type="text" name="name" />
+        </div>
+        <div className="labels">
+          <label>Lastname</label>
+          <input onChange={addLastName} type="text" name="lastName" />
+        </div>
+        <div className="labels">
+          <label>Email</label>
+          <input onChange={addEmail} type="text" name="email" />
+        </div>
         <button onClick={onAddStudent}>add student</button>
-        {list.map((student, index) => <div key={index}>
-          <h2>{student.name}</h2>
-          <h2>{student.lastName}</h2>
-        </div>)}
       </form>
+      <StudentArray array={list} handleDelete={handleDelete} />
     </div>
-  )
-}
+  );
+};
 
-export default ListOfStudents
+export default ListOfStudents;
